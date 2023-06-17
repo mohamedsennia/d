@@ -4,7 +4,7 @@ def show(G,clusters,clustersColors):
     colors=[]
     for c in clusters:
         colors.append(clustersColors[c-1])
-    nx.draw_spring(G,node_color=colors,with_labels=True)
+    nx.draw_spring(G,node_color=colors)
     plt.show()
 import networkx as nx
 import matplotlib.pyplot as plt

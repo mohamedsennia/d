@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>293</width>
-    <height>293</height>
+    <height>288</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -102,7 +102,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>180</y>
+      <y>210</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -114,14 +114,40 @@
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>180</y>
+      <x>170</x>
+      <y>210</y>
       <width>75</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
      <string>Run tests</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="Louvain">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>170</y>
+      <width>101</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Louvain</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="particle">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>170</y>
+      <width>101</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Particle swarm</string>
     </property>
    </widget>
   </widget>

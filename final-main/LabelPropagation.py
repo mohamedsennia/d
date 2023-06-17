@@ -5,6 +5,10 @@ import show as sh
 import modularité as md
 import numpy as np
 import draw as dr
+import urllib.request
+import io
+import zipfile
+
 def labelPropagation(G,nodes,clusters,show):
     a=0
     ns=nodes
@@ -24,12 +28,14 @@ def labelPropagation(G,nodes,clusters,show):
 def exe(G):
     noeuds=[]
     noeuds=list(G.nodes)
-    clusters=[]
+    clusters={}
     for i in range(len(noeuds)):
-        clusters.append(i+1)
-    sh.draw_first(G)    
-    clusters=labelPropagation(G,noeuds,clusters,True)
-    print(clusters)
+        clusters[noeuds[i]]=i+1
+
+    colors=sh.init_colors(list(clusters.values()))    
+    clusters,ran=labelPropagation(G,noeuds,clusters,True)
+    return clusters,ran
+    
 def rateMod(Gs,n):
     mods=[]
     sizes=[]
@@ -37,23 +43,19 @@ def rateMod(Gs,n):
         noeuds=[]
         noeuds=list(G.nodes)
         sizes.append(len(noeuds))
-        clusters=[]
-        for i in range(len(noeuds)):
-            clusters.append(i+1)
+        
         mod=0
         mat=md.matAdj(G)
         m=md.m(mat)
         for i in range(n):
-            clusters,a=labelPropagation(G,noeuds,clusters,False)
-            mod+=md.modularite(G,mat,clusters,m)
-            clusters=[]
-            noeuds=list(G.nodes)
-            for i in range(len(noeuds)):
-                clusters.append(i+1)
+            clusters,a=exe(G)
+            ma=md.modularite(G,mat,list(clusters.values()),m)
+            mod+=ma
+            
         mod=mod/n
         mods.append(mod)
     print(sizes,mods)
-    dr.draw(sizes,mods)
+    dr.draw(sizes,mods,"changement de modulairté par rapport au taille de graphe","taille de graphe","modularité")
 def rateA(Gs,n):
     As=[]
     sizes=[]
@@ -62,27 +64,17 @@ def rateA(Gs,n):
         noeuds=[]
         noeuds=list(G.nodes)
         sizes.append(len(noeuds))
-        clusters=[]
-        for i in range(len(noeuds)):
-            clusters.append(i+1)
+        
         for i in range(n):
-            clusters,a=labelPropagation(G,noeuds,clusters,False)
+            clusters,a=exe(G)
             A+=a
-            clusters=[]
-            noeuds=list(G.nodes)
-            for i in range(len(noeuds)):
-                clusters.append(i+1)
+            
         A=A/n
         As.append(A)
     print(sizes,As)
-    dr.draw(sizes,As)
+    dr.draw(sizes,As,"changement de nombre de choix aléatoire, par rapport au taille de graphe", "taille de graphe","nombre de choix aléatoire fait")
   
-import urllib.request
-import io
-import zipfile
 
-import matplotlib.pyplot as plt
-import networkx as nx
 
 url = "http://www-personal.umich.edu/~mejn/netdata/football.zip"
 
@@ -97,13 +89,13 @@ gml = zf.read("football.gml").decode()  # read gml data
 gml = gml.split("\n")[1:]
 G = nx.parse_gml(gml)  # parse gml data
 
-print(txt)
-# print degree for each team - number of games
-for n, d in G.degree():
-    print(f"{n:20} {d:2}")
+
+
 
 options = {"node_color": "black", "node_size": 50, "linewidths": 0, "width": 0.1}
 
 pos = nx.spring_layout(G, seed=1969)  # Seed for reproducible layout
-nx.draw(G, pos, **options)
-plt.show()
+G1=nx.karate_club_graph()
+edgelist=[(0,1),(1,2),(2,3),(2,4),(2,5),(3,4),(5,6),(5,7),(6,7),(7,8),(7,9),(8,9)]
+G2=nx.from_edgelist(edgelist)  
+rateA([G,G1,G2],100)

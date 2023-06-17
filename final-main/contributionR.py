@@ -5,14 +5,21 @@ import numpy as np
 import show as sh
 import cr as crs
 import modularité as modu
+import urllib.request
+import io
+import zipfile
 def exe(G,k,T):
   
     nodes=list(G.nodes)
     nodes.sort()
     lengths=[]
+    keys={}
+    j=0
     for i in (nodes):
+        keys[i]=j
         lengths.append(len(list(G.neighbors(i))))
-        
+        j+=1
+    j=0
     lengths.sort()
     tresh=int((len(nodes)*k)/100)
     tresh=tresh-1
@@ -54,31 +61,37 @@ def exe(G,k,T):
                 candidats[element].remove(key)
     
     clusters=np.zeros(len(nodes),dtype=int)
+    
     cl=set()
     c=1
     for key in candidats:
         
         if(len(candidats[key])==0):
-            clusters[key]=c
+            clusters[keys[key]]=c
             if(c!=0):
                 cl.add(key)
             c=c+1
         else:
             b=False
             for e in candidats[key]:
-                if(clusters[e]!=0):
-                    clusters[key]=clusters[e]
+                if(clusters[keys[e]]!=0):
+                    clusters[keys[key]]=clusters[keys[e]]
                     if(c!=0):
                         cl.add(key)
                     b=True
                     break
             if(b==False):
-                clusters[key]=c
+                clusters[keys[key]]=c
                 if(c!=0):
                     cl.add(key)
                 c=c+1
-    clusters,ran=crs.labelPropagation(G,nodes,clusters,True)
-    print(clusters)
+    clusters2={}
+    
+    for i in range(len(nodes)):
+        clusters2[nodes[i]]=clusters[i]
+    
+    clusters,ran=crs.labelPropagation(G,nodes,clusters2,True)
+    clusters=list(clusters.values())
     return clusters,ran
 
 def rateMod(Gs,k,T,n):
@@ -98,8 +111,8 @@ def rateMod(Gs,k,T,n):
             adj=modu.matAdj(G)
             mod+=modu.modularite(G,adj,clusters2,m)
         mod=mod/n
-        Mods.append(mod) 
-    print(sizes,Mods)      
+        Mods.append(mod)
+    print(sizes,Mods)    
     dr.draw(sizes,Mods)
 def rateModPerK(G,ks,T,n):
     Mods=[]
@@ -179,7 +192,7 @@ def rateAsPerK(G,ks,T,n):
         As.append(H)
     print(Ks,As)  
     dr.draw(Ks,As)
-def rateAsPerK(G,k,Ts,n):
+def rateAsPerT(G,k,Ts,n):
     As=[]
     ts=[]
     for T in Ts:
@@ -198,11 +211,36 @@ def rateAsPerK(G,k,Ts,n):
         As.append(H)
     print(ts,As)  
     dr.draw(ts,As)
+
+
+
+
 G1=nx.karate_club_graph()
 edgelist=[(0,1),(1,2),(2,3),(2,4),(2,5),(3,4),(5,6),(5,7),(6,7),(7,8),(7,9),(8,9)]
 G2=nx.from_edgelist(edgelist)  
-rateMod([G1,G2],20,50,10)
+#rateMod([G1,G2],20,50,10)
+url = "http://www-personal.umich.edu/~mejn/netdata/football.zip"
 
+sock = urllib.request.urlopen(url)  # open URL
+s = io.BytesIO(sock.read())  # read into BytesIO "file"
+sock.close()
+
+zf = zipfile.ZipFile(s)  # zipfile object
+txt = zf.read("football.txt").decode()  # read info file
+gml = zf.read("football.gml").decode()  # read gml data
+# throw away bogus first line with # from mejn files
+gml = gml.split("\n")[1:]
+G = nx.parse_gml(gml)  # parse gml data
+
+
+
+
+options = {"node_color": "black", "node_size": 50, "linewidths": 0, "width": 0.1}
+
+pos = nx.spring_layout(G, seed=1969)  # Seed for reproducible layout
+colors=sh.init_colors([n for n in G.nodes()])
+
+exe(G1,25,50)
 
 
 

@@ -5,6 +5,9 @@ import numpy as np
 import show as sh
 import modularité as md
 import draw as dr
+import urllib.request
+import io
+import zipfile
 def Kmeans(G,k,show):
     nodes=list(G.nodes)
     clusters=[]
