@@ -36,7 +36,7 @@ def exe(G):
     clusters,ran=labelPropagation(G,noeuds,clusters,True)
     return clusters,ran
     
-def rateMod(Gs,n):
+def rateMod(Gs,n,show):
     mods=[]
     sizes=[]
     for G in Gs:
@@ -54,9 +54,10 @@ def rateMod(Gs,n):
             
         mod=mod/n
         mods.append(mod)
-    print(sizes,mods)
-    dr.draw(sizes,mods,"changement de modulairté par rapport au taille de graphe","taille de graphe","modularité")
-def rateA(Gs,n):
+    if(show):
+        dr.draw(sizes,mods,"changement de modulairté par rapport au taille de graphe","taille de graphe","modularité")
+    return(sizes,mods)
+def rateA(Gs,n,show):
     As=[]
     sizes=[]
     for G in Gs:
@@ -71,9 +72,9 @@ def rateA(Gs,n):
             
         A=A/n
         As.append(A)
-    print(sizes,As)
-    dr.draw(sizes,As,"changement de nombre de choix aléatoire, par rapport au taille de graphe", "taille de graphe","nombre de choix aléatoire fait")
-  
+    if(show):
+        dr.draw(sizes,As,"changement de nombre de choix aléatoire, par rapport au taille de graphe", "taille de graphe","nombre de choix aléatoire fait")
+    return(sizes,As)
 
 
 url = "http://www-personal.umich.edu/~mejn/netdata/football.zip"
@@ -98,4 +99,3 @@ pos = nx.spring_layout(G, seed=1969)  # Seed for reproducible layout
 G1=nx.karate_club_graph()
 edgelist=[(0,1),(1,2),(2,3),(2,4),(2,5),(3,4),(5,6),(5,7),(6,7),(7,8),(7,9),(8,9)]
 G2=nx.from_edgelist(edgelist)  
-rateA([G,G1,G2],100)

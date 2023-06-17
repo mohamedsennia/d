@@ -44,7 +44,7 @@ def ratePerK(G,Kmax):
         Ks.append(k)
         clusters=new_grivan(G,k,False)
         modularites.append(mod.modularite(G,matAdj,clusters,m))
-    dr.draw(Ks,modularites)
+    dr.draw(Ks,modularites,"changement de modularité par rapport au changement de k","valeurs de k","modularité")
 def ratePerGraph(Gs,k):
     modularites=[]
     sizes=[]
@@ -56,7 +56,7 @@ def ratePerGraph(Gs,k):
         clusters=new_grivan(G,k,False)
         modularites.append(mod.modularite(G,matAdj,clusters,m))
     print(sizes,modularites)
-    dr.draw(sizes,modularites)
+    dr.draw(sizes,modularites,"changement de modularité par rapport au changement de la taille de graphe","taille de graphe","modularité")
     
 G1=nx.karate_club_graph()
 edgelist=[(0,1),(1,2),(2,3),(2,4),(2,5),(3,4),(5,6),(5,7),(6,7),(7,8),(7,9),(8,9)]

@@ -8,7 +8,7 @@ import modularité as modu
 import urllib.request
 import io
 import zipfile
-def exe(G,k,T):
+def exe(G,k,T,show):
   
     nodes=list(G.nodes)
     nodes.sort()
@@ -90,11 +90,11 @@ def exe(G,k,T):
     for i in range(len(nodes)):
         clusters2[nodes[i]]=clusters[i]
     
-    clusters,ran=crs.labelPropagation(G,nodes,clusters2,True)
+    clusters,ran=crs.labelPropagation(G,nodes,clusters2,show)
     clusters=list(clusters.values())
     return clusters,ran
 
-def rateMod(Gs,k,T,n):
+def rateMod(Gs,k,T,n,show):
     Mods=[]
     sizes=[]
     for G in Gs:
@@ -107,13 +107,14 @@ def rateMod(Gs,k,T,n):
         m=modu.m(adj)
         for i in range(n):
             
-            clusters2,ran=exe(G,k,T)
+            clusters2,ran=exe(G,k,T,False)
             adj=modu.matAdj(G)
             mod+=modu.modularite(G,adj,clusters2,m)
         mod=mod/n
         Mods.append(mod)
-    print(sizes,Mods)    
-    dr.draw(sizes,Mods)
+    if(show):
+        dr.draw(sizes,Mods,"changement de modularité par rapport au taille de graphe","taille de graphe","modularité")
+    return(sizes,Mods)  
 def rateModPerK(G,ks,T,n):
     Mods=[]
     Ks=[]
@@ -127,13 +128,13 @@ def rateModPerK(G,ks,T,n):
         m=modu.m(adj)
         for i in range(n):
             
-            clusters2,ran=exe(G,k,T)
+            clusters2,ran=exe(G,k,T,False)
             adj=modu.matAdj(G)
             mod+=modu.modularite(G,adj,clusters2,m)
         mod=mod/n
         Mods.append(mod) 
     print(Ks,Mods)      
-    dr.draw(Ks,Mods)
+    dr.draw(Ks,Mods,"changement de modularité par rapport au changement de k","k","modularité")
 def rateModPerT(G,k,Ts,n):
     Mods=[]
     ts=[]
@@ -147,14 +148,14 @@ def rateModPerT(G,k,Ts,n):
         m=modu.m(adj)
         for i in range(n):
             
-            clusters2,ran=exe(G,k,T)
+            clusters2,ran=exe(G,k,T,False)
             adj=modu.matAdj(G)
             mod+=modu.modularite(G,adj,clusters2,m)
         mod=mod/n
         Mods.append(mod) 
     print(ts,Mods)      
-    dr.draw(ts,Mods)
-def rateAs(Gs,k,T,n):
+    dr.draw(ts,Mods,"changement de modularité par rapport au changement de T","T","modularité")
+def rateAs(Gs,k,T,n,show):
     As=[]
     sizes=[]
     for G in Gs:
@@ -165,14 +166,16 @@ def rateAs(Gs,k,T,n):
         H=0
         for i in range(n):
             
-            clusters2,ran=exe(G,k,T)
+            clusters2,ran=exe(G,k,T,False)
             H=H+ran
             print(ran)
         H=H/n
         print(H)
         As.append(H)
     print(sizes,As)  
-    dr.draw(sizes,As)
+    if(show):
+        dr.draw(sizes,As,"changement de nombre de choix aléatoire par rapport au taille de graphe","taille de graphe","Choix aléatoire")
+    return(sizes,As)
 def rateAsPerK(G,ks,T,n):
     As=[]
     Ks=[]
@@ -184,14 +187,14 @@ def rateAsPerK(G,ks,T,n):
         H=0
         for i in range(n):
             
-            clusters2,ran=exe(G,k,T)
+            clusters2,ran=exe(G,k,T,False)
             H=H+ran
             print(ran)
         H=H/n
         print(H)
         As.append(H)
     print(Ks,As)  
-    dr.draw(Ks,As)
+    dr.draw(Ks,As,"changement de nombre de choix aléatoire par rapport au k","k","Choix aléatoire")
 def rateAsPerT(G,k,Ts,n):
     As=[]
     ts=[]
@@ -203,14 +206,14 @@ def rateAsPerT(G,k,Ts,n):
         H=0
         for i in range(n):
             
-            clusters2,ran=exe(G,k,T)
+            clusters2,ran=exe(G,k,T,False)
             H=H+ran
             print(ran)
         H=H/n
         print(H)
         As.append(H)
     print(ts,As)  
-    dr.draw(ts,As)
+    dr.draw(ts,As,"changement de nombre de choix aléatoire par rapport au T","T","Choix aléatoire")
 
 
 
@@ -240,7 +243,6 @@ options = {"node_color": "black", "node_size": 50, "linewidths": 0, "width": 0.1
 pos = nx.spring_layout(G, seed=1969)  # Seed for reproducible layout
 colors=sh.init_colors([n for n in G.nodes()])
 
-exe(G1,25,50)
 
 
 

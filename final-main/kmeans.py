@@ -17,9 +17,10 @@ def Kmeans(G,k,show):
         rin=random.randint(0,k-1)
         clusters[rin].append(n)
     AdjeMat=nx.to_numpy_array(G,dtype=int)
+    print(AdjeMat)
     clustersp=[]
     history=[]
-    clus=np.zeros(len(nodes),dtype=int)
+    clus={}
     for i in range(len(clusters)):
         for c in clusters[i]:
             clus[c]=i+1
@@ -30,18 +31,21 @@ def Kmeans(G,k,show):
         clustersp=[]
         for c in clusters:
             clustersp.append(list(c[:]))
-            
+        mo=-1
         for n in nodes:
+            mo=mo+1
             d=-1
             c=-1
             c0=-1
             
             for i in range(k):
                 dt=0
+                mel=-1
                 for n2 in clusters[i]:
+                    mel=mel+1
                     if(n2==n):
                         c0=i
-                    if(AdjeMat[n][n2]!=0):
+                    if(AdjeMat[mo][mel]!=0):
                         dt=dt+1
                 if(len(clusters[i])!=0):
                     dt=dt/len(clusters[i])
@@ -90,4 +94,23 @@ def evaluateN(Gs,k):
 G=nx.karate_club_graph()
 edgelist=[(0,1),(1,2),(2,3),(2,4),(2,5),(3,4),(5,6),(5,7),(6,7),(7,8),(7,9),(8,9)]
 G1=nx.from_edgelist(edgelist) 
-evaluateN([G1,G],4)
+url = "http://www-personal.umich.edu/~mejn/netdata/football.zip"
+
+sock = urllib.request.urlopen(url)  # open URL
+s = io.BytesIO(sock.read())  # read into BytesIO "file"
+sock.close()
+
+zf = zipfile.ZipFile(s)  # zipfile object
+txt = zf.read("football.txt").decode()  # read info file
+gml = zf.read("football.gml").decode()  # read gml data
+# throw away bogus first line with # from mejn files
+gml = gml.split("\n")[1:]
+G = nx.parse_gml(gml)  # parse gml data
+
+
+
+
+options = {"node_color": "black", "node_size": 50, "linewidths": 0, "width": 0.1}
+
+pos = nx.spring_layout(G, seed=1969)  # Seed for reproducible layout
+exe(G,2)
