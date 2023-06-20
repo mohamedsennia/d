@@ -8,7 +8,7 @@ import draw as dr
 import urllib.request
 import io
 import zipfile
-
+import datetime
 def labelPropagation(G,nodes,clusters,show):
     a=0
     ns=nodes
@@ -39,7 +39,9 @@ def exe(G):
 def rateMod(Gs,n,show):
     mods=[]
     sizes=[]
+    times=[]
     for G in Gs:
+        start=datetime.datetime.now()
         noeuds=[]
         noeuds=list(G.nodes)
         sizes.append(len(noeuds))
@@ -48,15 +50,21 @@ def rateMod(Gs,n,show):
         mat=md.matAdj(G)
         m=md.m(mat)
         for i in range(n):
+            start=datetime.datetime.now()
             clusters,a=exe(G)
+            now=datetime.datetime.now()
             ma=md.modularite(G,mat,list(clusters.values()),m)
             mod+=ma
             
         mod=mod/n
         mods.append(mod)
+       
+        diff=now-start
+        times.append(diff.total_seconds())
     if(show):
         dr.draw(sizes,mods,"changement de modulairté par rapport au taille de graphe","taille de graphe","modularité")
-    return(sizes,mods)
+        dr.draw(sizes,times,"Temps d'exécution en fonction du taille de graphe","taille de graphe","Temps d'exécution (s)")
+    return(sizes,mods,times)
 def rateA(Gs,n,show):
     As=[]
     sizes=[]

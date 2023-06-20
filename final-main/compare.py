@@ -7,6 +7,7 @@ import urllib.request
 import io
 import zipfile
 import networkx as nx
+
 url = "http://www-personal.umich.edu/~mejn/netdata/football.zip"
 
 sock = urllib.request.urlopen(url)  # open URL
@@ -30,9 +31,24 @@ G1=nx.karate_club_graph()
 edgelist=[(0,1),(1,2),(2,3),(2,4),(2,5),(3,4),(5,6),(5,7),(6,7),(7,8),(7,9),(8,9)]
 G2=nx.from_edgelist(edgelist)   
 # Using Numpy to create an array X
-sizes,labelMod=LB.rateMod([G2,G1,G],100,False)
-sizes,contrMod=CR.rateMod([G2,G1,G],50,50,100,False)
+
+sizes,labelMod,times1=LB.rateMod([G2,G1,G],100,False)
+sizes,contrMod,times2=CR.rateMod([G2,G1,G],50,50,100,False)
   
+# Plotting both the curves simultaneously
+plt.plot(sizes, times1, color='r', label='label propagation')
+plt.plot(sizes, times2, color='g', label='contribution')
+  
+# Naming the x-axis, y-axis and the whole graph
+plt.xlabel("taille de graphe")
+plt.ylabel("Temps d'exécution")
+plt.title("Comparaison de performance")
+  
+# Adding legend, which helps us recognize the curve according to it's color
+plt.legend()
+  
+# To load the display window
+plt.show()
 # Plotting both the curves simultaneously
 plt.plot(sizes, labelMod, color='r', label='label propagation')
 plt.plot(sizes, contrMod, color='g', label='contribution')
@@ -47,6 +63,10 @@ plt.legend()
   
 # To load the display window
 plt.show()
+
+
+
+
 sizes,labelA=LB.rateA([G2,G1,G],100,False)
 sizes,contrA=CR.rateAs([G2,G1,G],50,50,100,False)
 # Plotting both the curves simultaneously

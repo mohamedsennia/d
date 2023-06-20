@@ -5,6 +5,7 @@ import draw as dr
 import urllib.request
 import io
 import zipfile
+import datetime
 def new_grivan(G,k,show):
     G2=G
     a=nx.connected_components(G)
@@ -38,25 +39,37 @@ def new_grivan(G,k,show):
 def ratePerK(G,Kmax):
     modularites=[]
     Ks=[]
+    times=[]
     matAdj=mod.matAdj(G)
     m=mod.m(matAdj)
     for k in range(2,Kmax):
+        start=datetime.datetime.now()
         Ks.append(k)
         clusters=new_grivan(G,k,False)
+        end=datetime.datetime.now()
+        diff=end-start
+        times.append(diff.total_seconds())
         modularites.append(mod.modularite(G,matAdj,clusters,m))
+        
     dr.draw(Ks,modularites,"changement de modularité par rapport au changement de k","valeurs de k","modularité")
+    dr.draw(Ks,times,"Temps d'exécution en fonction de k","k","Temps d'exécution (s)")
 def ratePerGraph(Gs,k):
     modularites=[]
     sizes=[]
-    
+    times=[]
     for G in Gs:
+        start=datetime.datetime.now()
         matAdj=mod.matAdj(G)
         m=mod.m(matAdj)
         sizes.append(len(list(G.nodes())))
         clusters=new_grivan(G,k,False)
+        end=datetime.datetime.now()
+        diff=end-start
+        times.append(diff.total_seconds())
         modularites.append(mod.modularite(G,matAdj,clusters,m))
     print(sizes,modularites)
     dr.draw(sizes,modularites,"changement de modularité par rapport au changement de la taille de graphe","taille de graphe","modularité")
+    dr.draw(sizes,times,"Temps d'exécution en fonction de la taille de graphe","Taille de graphe","Temps d'exécution (s)")
     
 G1=nx.karate_club_graph()
 edgelist=[(0,1),(1,2),(2,3),(2,4),(2,5),(3,4),(5,6),(5,7),(6,7),(7,8),(7,9),(8,9)]
@@ -81,4 +94,4 @@ G = nx.parse_gml(gml)  # parse gml data
 options = {"node_color": "black", "node_size": 50, "linewidths": 0, "width": 0.1}
 
 pos = nx.spring_layout(G, seed=1969)
-ratePerK(G,50)
+ratePerGraph([G2,G1,G],5)

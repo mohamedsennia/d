@@ -8,12 +8,15 @@ import modularité as modu
 import urllib.request
 import io
 import zipfile
+import datetime
 def exe(G,k,T,show):
   
     nodes=list(G.nodes)
     nodes.sort()
     lengths=[]
+    times=[]
     keys={}
+    
     j=0
     for i in (nodes):
         keys[i]=j
@@ -97,7 +100,9 @@ def exe(G,k,T,show):
 def rateMod(Gs,k,T,n,show):
     Mods=[]
     sizes=[]
+    times=[]
     for G in Gs:
+        
         nodes=list(G.nodes)
         nodes.sort()
         sizes.append(len(nodes))
@@ -105,19 +110,28 @@ def rateMod(Gs,k,T,n,show):
         mod=0
         adj=modu.matAdj(G)
         m=modu.m(adj)
+        
         for i in range(n):
-            
+            start=datetime.datetime.now()
+            print(start)
             clusters2,ran=exe(G,k,T,False)
+            print("end")
+            end=datetime.datetime.now()
             adj=modu.matAdj(G)
             mod+=modu.modularite(G,adj,clusters2,m)
+            
         mod=mod/n
+        diff=end-start
         Mods.append(mod)
+        times.append(diff.total_seconds())
     if(show):
         dr.draw(sizes,Mods,"changement de modularité par rapport au taille de graphe","taille de graphe","modularité")
-    return(sizes,Mods)  
+        dr.draw(sizes,times,"Temps d'exécution en fonction de la taille de graphe","Taille de graphe","Temps d'exécution (s)")
+    return(sizes,Mods,times)  
 def rateModPerK(G,ks,T,n):
     Mods=[]
     Ks=[]
+    times=[]
     for k in ks:
         nodes=list(G.nodes)
         nodes.sort()
@@ -127,15 +141,21 @@ def rateModPerK(G,ks,T,n):
         adj=modu.matAdj(G)
         m=modu.m(adj)
         for i in range(n):
-            
+            start=datetime.datetime.now()
             clusters2,ran=exe(G,k,T,False)
+            end=datetime.datetime.now()
             adj=modu.matAdj(G)
             mod+=modu.modularite(G,adj,clusters2,m)
+            
         mod=mod/n
+        diff=end-start
+        times.append(float(diff.total_seconds()))
         Mods.append(mod) 
     print(Ks,Mods)      
     dr.draw(Ks,Mods,"changement de modularité par rapport au changement de k","k","modularité")
+    dr.draw(Ks,times,"Temps d'exécution en fonction de k","k","Temps d'exécution (s)")
 def rateModPerT(G,k,Ts,n):
+    times=[]
     Mods=[]
     ts=[]
     for T in Ts:
@@ -147,14 +167,18 @@ def rateModPerT(G,k,Ts,n):
         adj=modu.matAdj(G)
         m=modu.m(adj)
         for i in range(n):
-            
+            start=datetime.datetime.now()
             clusters2,ran=exe(G,k,T,False)
+            end=datetime.datetime.now()
             adj=modu.matAdj(G)
             mod+=modu.modularite(G,adj,clusters2,m)
         mod=mod/n
+        diff=end-start
+        times.append(float(diff.total_seconds()))
         Mods.append(mod) 
     print(ts,Mods)      
     dr.draw(ts,Mods,"changement de modularité par rapport au changement de T","T","modularité")
+    dr.draw(ts,times,"Temps d'exécution en fonction de T","T","Temps d'exécution (s)")
 def rateAs(Gs,k,T,n,show):
     As=[]
     sizes=[]

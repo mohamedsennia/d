@@ -9,6 +9,7 @@ import draw as dr
 import urllib.request
 import io
 import zipfile
+import datetime
 def exe(G,show):
     nodes=list(G.nodes())
     clusters={}
@@ -43,13 +44,19 @@ def exe(G,show):
         sh.show(G,list(clusters.values()),colors)
     return(mod)
 def rateMod(Gs):
+    times=[]
     mods=[]
     sizes=[]
     for G in Gs:
         size=len(list(G.nodes))
         sizes.append(size)
+        start=datetime.datetime.now()
         mods.append(exe(G,False))
+        end=datetime.datetime.now()
+        diff=end-start
+        times.append(diff.total_seconds())
     dr.draw(sizes,mods,"changement de modularité par rapport au taille de graphe","taille de graphe","modularité")
+    dr.draw(sizes,times,"Temps d'exécution en fonction de la taille de graphe","Taille de graphe","Temps d'exécution (s)")
 edgelist=[(0,1),(1,2),(2,3),(2,4),(2,5),(3,4),(5,6),(5,7),(6,7),(7,8),(7,9),(8,9)]
 G1=nx.from_edgelist(edgelist)  
 G2=nx.karate_club_graph()
