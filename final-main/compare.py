@@ -40,9 +40,9 @@ plt.plot(sizes, times1, color='r', label='label propagation')
 plt.plot(sizes, times2, color='g', label='contribution')
   
 # Naming the x-axis, y-axis and the whole graph
-plt.xlabel("taille de graphe")
+plt.xlabel("Taille du graphe")
 plt.ylabel("Temps d'exécution")
-plt.title("Comparaison de performance")
+plt.title("Comparaison du performance")
   
 # Adding legend, which helps us recognize the curve according to it's color
 plt.legend()
@@ -54,9 +54,9 @@ plt.plot(sizes, labelMod, color='r', label='label propagation')
 plt.plot(sizes, contrMod, color='g', label='contribution')
   
 # Naming the x-axis, y-axis and the whole graph
-plt.xlabel("taille de graphe")
+plt.xlabel("Taille du graphe")
 plt.ylabel("Modularité")
-plt.title("Comparaison de performance")
+plt.title("Comparaison du performance")
   
 # Adding legend, which helps us recognize the curve according to it's color
 plt.legend()
@@ -74,9 +74,9 @@ plt.plot(sizes, labelA, color='r', label='label propagation')
 plt.plot(sizes, contrA, color='g', label='contribution')
   
 # Naming the x-axis, y-axis and the whole graph
-plt.xlabel("taille de graphe")
+plt.xlabel("Taille du graphe")
 plt.ylabel("Modularité")
-plt.title("Comparaison de performance")
+plt.title("Comparaison du performance")
   
 # Adding legend, which helps us recognize the curve according to it's color
 plt.legend()

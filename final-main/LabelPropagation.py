@@ -62,8 +62,8 @@ def rateMod(Gs,n,show):
         diff=now-start
         times.append(diff.total_seconds())
     if(show):
-        dr.draw(sizes,mods,"changement de modulairté par rapport au taille de graphe","taille de graphe","modularité")
-        dr.draw(sizes,times,"Temps d'exécution en fonction du taille de graphe","taille de graphe","Temps d'exécution (s)")
+        dr.draw(sizes,mods,"changement du modulairté par rapport au taille du graphe","taille du graphe","modularité")
+        dr.draw(sizes,times,"Temps d'exécution en fonction de taille du graphe","taille du graphe","Temps d'exécution (s)")
     return(sizes,mods,times)
 def rateA(Gs,n,show):
     As=[]
@@ -81,7 +81,7 @@ def rateA(Gs,n,show):
         A=A/n
         As.append(A)
     if(show):
-        dr.draw(sizes,As,"changement de nombre de choix aléatoire, par rapport au taille de graphe", "taille de graphe","nombre de choix aléatoire fait")
+        dr.draw(sizes,As,"changement de nombre de choix aléatoire, par rapport au taille du graphe", "taille du graphe","nombre de choix aléatoire fait")
     return(sizes,As)
 
 
@@ -107,3 +107,5 @@ pos = nx.spring_layout(G, seed=1969)  # Seed for reproducible layout
 G1=nx.karate_club_graph()
 edgelist=[(0,1),(1,2),(2,3),(2,4),(2,5),(3,4),(5,6),(5,7),(6,7),(7,8),(7,9),(8,9)]
 G2=nx.from_edgelist(edgelist)  
+rateMod([G2,G1,G],100,True)
+rateA([G2,G1,G],100,True)

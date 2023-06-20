@@ -68,8 +68,8 @@ def ratePerGraph(Gs,k):
         times.append(diff.total_seconds())
         modularites.append(mod.modularite(G,matAdj,clusters,m))
     print(sizes,modularites)
-    dr.draw(sizes,modularites,"changement de modularité par rapport au changement de la taille de graphe","taille de graphe","modularité")
-    dr.draw(sizes,times,"Temps d'exécution en fonction de la taille de graphe","Taille de graphe","Temps d'exécution (s)")
+    dr.draw(sizes,modularites,"changement de modularité par rapport au changement de taille du graphe","taille du graphe","modularité")
+    dr.draw(sizes,times,"Temps d'exécution en fonction de taille du graphe","Taille du graphe","Temps d'exécution (s)")
     
 G1=nx.karate_club_graph()
 edgelist=[(0,1),(1,2),(2,3),(2,4),(2,5),(3,4),(5,6),(5,7),(6,7),(7,8),(7,9),(8,9)]

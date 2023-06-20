@@ -125,8 +125,8 @@ def rateMod(Gs,k,T,n,show):
         Mods.append(mod)
         times.append(diff.total_seconds())
     if(show):
-        dr.draw(sizes,Mods,"changement de modularité par rapport au taille de graphe","taille de graphe","modularité")
-        dr.draw(sizes,times,"Temps d'exécution en fonction de la taille de graphe","Taille de graphe","Temps d'exécution (s)")
+        dr.draw(sizes,Mods,"changement de modularité par rapport au taille du graphe","taille du graphe","modularité")
+        dr.draw(sizes,times,"Temps d'exécution en fonction de la taille du graphe","Taille du graphe","Temps d'exécution (s)")
     return(sizes,Mods,times)  
 def rateModPerK(G,ks,T,n):
     Mods=[]
@@ -198,7 +198,7 @@ def rateAs(Gs,k,T,n,show):
         As.append(H)
     print(sizes,As)  
     if(show):
-        dr.draw(sizes,As,"changement de nombre de choix aléatoire par rapport au taille de graphe","taille de graphe","Choix aléatoire")
+        dr.draw(sizes,As,"changement de nombre de choix aléatoire par rapport au taille du graphe","taille du graphe","Choix aléatoire")
     return(sizes,As)
 def rateAsPerK(G,ks,T,n):
     As=[]
@@ -266,7 +266,8 @@ options = {"node_color": "black", "node_size": 50, "linewidths": 0, "width": 0.1
 
 pos = nx.spring_layout(G, seed=1969)  # Seed for reproducible layout
 colors=sh.init_colors([n for n in G.nodes()])
+rateMod([G2,G1,G],20,50,100,True)
 
 
-
+rateAs([G2,G1,G],20,50,100,True)
 

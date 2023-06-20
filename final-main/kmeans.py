@@ -18,7 +18,8 @@ def Kmeans(G,k,show):
         rin=random.randint(0,k-1)
         clusters[rin].append(n)
     AdjeMat=nx.to_numpy_array(G,dtype=int)
-    print(AdjeMat)
+    print(clusters)
+
     clustersp=[]
     history=[]
     clus={}
@@ -66,7 +67,7 @@ def Kmeans(G,k,show):
                 clus[c]=i+1
     if(show==True):
         sh.show(G,list(clus.values()),colors)
-    return clusters
+    return list(clus.values())
 
             
 
@@ -104,8 +105,8 @@ def evaluateN(Gs,k):
         diff=end-start
         times.append(diff.total_seconds())
     print(sizes,mod)
-    dr.draw(sizes,mod,"changement de modularité en fonction du taille de graphe","Taille","modularité")
-    dr.draw(sizes,times,"Temps d'exécution en fonction de la taille de graphe","Taille de graphe","Temps d'exécution (s)")
+    dr.draw(sizes,mod,"changement de modularité en fonction de taille du graphe","Taille","modularité")
+    dr.draw(sizes,times,"Temps d'exécution en fonction de la taille du graphe","Taille de graphe","Temps d'exécution (s)")
 G2=nx.karate_club_graph()
 edgelist=[(0,1),(1,2),(2,3),(2,4),(2,5),(3,4),(5,6),(5,7),(6,7),(7,8),(7,9),(8,9)]
 G1=nx.from_edgelist(edgelist) 
@@ -129,5 +130,4 @@ options = {"node_color": "black", "node_size": 50, "linewidths": 0, "width": 0.1
 
 pos = nx.spring_layout(G, seed=1969)  # Seed for reproducible layout
 
-evaluateK(G1,10)
-evaluateN([G2,G1,G],2)
+evaluateK(G2,10)

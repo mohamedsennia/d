@@ -55,8 +55,8 @@ def rateMod(Gs):
         end=datetime.datetime.now()
         diff=end-start
         times.append(diff.total_seconds())
-    dr.draw(sizes,mods,"changement de modularité par rapport au taille de graphe","taille de graphe","modularité")
-    dr.draw(sizes,times,"Temps d'exécution en fonction de la taille de graphe","Taille de graphe","Temps d'exécution (s)")
+    dr.draw(sizes,mods,"changement de modularité par rapport au taille du graphe","taille du graphe","modularité")
+    dr.draw(sizes,times,"Temps d'exécution en fonction de la taille du graphe","Taille du graphe","Temps d'exécution (s)")
 edgelist=[(0,1),(1,2),(2,3),(2,4),(2,5),(3,4),(5,6),(5,7),(6,7),(7,8),(7,9),(8,9)]
 G1=nx.from_edgelist(edgelist)  
 G2=nx.karate_club_graph()
