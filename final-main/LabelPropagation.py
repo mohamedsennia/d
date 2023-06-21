@@ -46,14 +46,27 @@ def rateMod(Gs,n,show):
         noeuds=list(G.nodes)
         sizes.append(len(noeuds))
         
+        
+        
+        
         mod=0
         mat=md.matAdj(G)
         m=md.m(mat)
         for i in range(n):
             start=datetime.datetime.now()
             clusters,a=exe(G)
+            
+            clusters=list(clusters.values())
+            clusters2={}
+            for i in range(len(clusters)):
+                if(clusters[i] in clusters2.keys()):
+                    clusters2[clusters[i]].append(noeuds[i])
+                else:
+                    clusters2[clusters[i]]=[noeuds[i]]
+
             now=datetime.datetime.now()
-            ma=md.modularite(G,mat,list(clusters.values()),m)
+            
+            ma=nx.community.modularity(G,list(clusters2.values()))
             mod+=ma
             
         mod=mod/n
@@ -107,5 +120,5 @@ pos = nx.spring_layout(G, seed=1969)  # Seed for reproducible layout
 G1=nx.karate_club_graph()
 edgelist=[(0,1),(1,2),(2,3),(2,4),(2,5),(3,4),(5,6),(5,7),(6,7),(7,8),(7,9),(8,9)]
 G2=nx.from_edgelist(edgelist)  
-rateMod([G2,G1,G],100,True)
-rateA([G2,G1,G],100,True)
+rateMod([G,G1,G],100,True)
+

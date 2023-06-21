@@ -22,7 +22,16 @@ def exe(G,show):
 
     adj=md.matAdj(G)
     m=md.m(adj)
-    mod=md.modularite(G,adj,list(clusters.values()),m)
+    clusters2={}
+    cls=list(clusters.values())
+    
+    for i in range(len(cls)):
+                if(cls[i] in clusters2.keys()):
+                    clusters2[cls[i]].append(nodes[i])
+                else:
+                    clusters2[cls[i]]=[nodes[i]]
+            
+    mod=nx.community.modularity(G,list(clusters2.values()))
     b=False
     colors=sh.init_colors((list(clusters.values())))
     while(b==False):
@@ -30,8 +39,17 @@ def exe(G,show):
         for i in range(len(nodes)):
             for n in G.neighbors(nodes[i]):
                 if(clustersRep[nodes[i]]!=clustersRep[n]):
+                    
                     clustersRep[nodes[i]]=clustersRep[n]
-                    modTemp=md.modularite(G,adj,list(clustersRep.values()),m)
+                    cls=list(clustersRep.values())
+                    clusters2={}
+                    for i in range(len(cls)):
+                        if(cls[i] in clusters2.keys()):
+                             clusters2[cls[i]].append(nodes[i])
+                        else:
+                            clusters2[cls[i]]=[nodes[i]]
+                    
+                    modTemp=nx.community.modularity(G,list(clusters2.values()))
                     if(modTemp>mod):
                         b=False
                         mod=modTemp
@@ -79,4 +97,4 @@ G = nx.parse_gml(gml)  # parse gml data
 options = {"node_color": "black", "node_size": 50, "linewidths": 0, "width": 0.1}
 
 pos = nx.spring_layout(G, seed=1969)  # Seed for reproducible layout
-rateMod([G,G2,G1])
+rateMod([G1,G2,G])

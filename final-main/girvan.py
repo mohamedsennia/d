@@ -42,6 +42,7 @@ def ratePerK(G,Kmax):
     times=[]
     matAdj=mod.matAdj(G)
     m=mod.m(matAdj)
+    noeuds=list(G.nodes())
     for k in range(2,Kmax):
         start=datetime.datetime.now()
         Ks.append(k)
@@ -49,7 +50,14 @@ def ratePerK(G,Kmax):
         end=datetime.datetime.now()
         diff=end-start
         times.append(diff.total_seconds())
-        modularites.append(mod.modularite(G,matAdj,clusters,m))
+        
+        clusters2={}
+        for i in range(len(clusters)):
+            if(clusters[i] in clusters2.keys()):
+                clusters2[clusters[i]].append(noeuds[i])
+            else:
+                clusters2[clusters[i]]=[noeuds[i]]
+        modularites.append(nx.community.modularity(G,list(clusters2.values())))
         
     dr.draw(Ks,modularites,"changement de modularité par rapport au changement de k","valeurs de k","modularité")
     dr.draw(Ks,times,"Temps d'exécution en fonction de k","k","Temps d'exécution (s)")
@@ -57,7 +65,9 @@ def ratePerGraph(Gs,k):
     modularites=[]
     sizes=[]
     times=[]
+
     for G in Gs:
+        noeuds=list(G.nodes())
         start=datetime.datetime.now()
         matAdj=mod.matAdj(G)
         m=mod.m(matAdj)
@@ -66,7 +76,13 @@ def ratePerGraph(Gs,k):
         end=datetime.datetime.now()
         diff=end-start
         times.append(diff.total_seconds())
-        modularites.append(mod.modularite(G,matAdj,clusters,m))
+        clusters2={}
+        for i in range(len(clusters)):
+            if(clusters[i] in clusters2.keys()):
+                clusters2[clusters[i]].append(noeuds[i])
+            else:
+                clusters2[clusters[i]]=[noeuds[i]]
+        modularites.append(nx.community.modularity(G,list(clusters2.values())))
     print(sizes,modularites)
     dr.draw(sizes,modularites,"changement de modularité par rapport au changement de taille du graphe","taille du graphe","modularité")
     dr.draw(sizes,times,"Temps d'exécution en fonction de taille du graphe","Taille du graphe","Temps d'exécution (s)")
@@ -94,4 +110,5 @@ G = nx.parse_gml(gml)  # parse gml data
 options = {"node_color": "black", "node_size": 50, "linewidths": 0, "width": 0.1}
 
 pos = nx.spring_layout(G, seed=1969)
-ratePerGraph([G2,G1,G],5)
+
+ratePerK(G1,10)

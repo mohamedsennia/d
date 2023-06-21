@@ -113,13 +113,21 @@ def rateMod(Gs,k,T,n,show):
         
         for i in range(n):
             start=datetime.datetime.now()
-            print(start)
             clusters2,ran=exe(G,k,T,False)
-            print("end")
+            
             end=datetime.datetime.now()
             adj=modu.matAdj(G)
-            mod+=modu.modularite(G,adj,clusters2,m)
             
+            
+            clusters={}
+            for i in range(len(clusters2)):
+                if(clusters2[i] in clusters.keys()):
+                    clusters[clusters2[i]].append(nodes[i])
+                else:
+                    clusters[clusters2[i]]=[nodes[i]]
+            
+            mod+=nx.community.modularity(G,list(clusters.values()))
+           
         mod=mod/n
         diff=end-start
         Mods.append(mod)
@@ -144,8 +152,14 @@ def rateModPerK(G,ks,T,n):
             start=datetime.datetime.now()
             clusters2,ran=exe(G,k,T,False)
             end=datetime.datetime.now()
-            adj=modu.matAdj(G)
-            mod+=modu.modularite(G,adj,clusters2,m)
+            clusters={}
+            for i in range(len(clusters2)):
+                if(clusters2[i] in clusters.keys()):
+                    clusters[clusters2[i]].append(nodes[i])
+                else:
+                    clusters[clusters2[i]]=[nodes[i]]
+            
+            mod+=nx.community.modularity(G,list(clusters.values()))
             
         mod=mod/n
         diff=end-start
@@ -170,8 +184,14 @@ def rateModPerT(G,k,Ts,n):
             start=datetime.datetime.now()
             clusters2,ran=exe(G,k,T,False)
             end=datetime.datetime.now()
-            adj=modu.matAdj(G)
-            mod+=modu.modularite(G,adj,clusters2,m)
+            clusters={}
+            for i in range(len(clusters2)):
+                if(clusters2[i] in clusters.keys()):
+                    clusters[clusters2[i]].append(nodes[i])
+                else:
+                    clusters[clusters2[i]]=[nodes[i]]
+            mod+=nx.community.modularity(G,list(clusters.values()))
+            
         mod=mod/n
         diff=end-start
         times.append(float(diff.total_seconds()))
@@ -266,8 +286,9 @@ options = {"node_color": "black", "node_size": 50, "linewidths": 0, "width": 0.1
 
 pos = nx.spring_layout(G, seed=1969)  # Seed for reproducible layout
 colors=sh.init_colors([n for n in G.nodes()])
-rateMod([G2,G1,G],20,50,100,True)
+rateMod([G2,G1,G],10,50,100,True)
+rateModPerK(G1,[11,21,31,41,51,61,71,81,91],50,100)
+rateModPerT(G1,10,[11,21,31,41,51,61,71,81,91],100)
 
 
-rateAs([G2,G1,G],20,50,100,True)
 

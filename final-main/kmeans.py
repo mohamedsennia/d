@@ -18,7 +18,7 @@ def Kmeans(G,k,show):
         rin=random.randint(0,k-1)
         clusters[rin].append(n)
     AdjeMat=nx.to_numpy_array(G,dtype=int)
-    print(clusters)
+    
 
     clustersp=[]
     history=[]
@@ -65,8 +65,11 @@ def Kmeans(G,k,show):
         for i in range(len(clustersp)):
             for c in clustersp[i]:
                 clus[c]=i+1
+                
+    
     if(show==True):
         sh.show(G,list(clus.values()),colors)
+    
     return list(clus.values())
 
             
@@ -80,14 +83,26 @@ def evaluateK(G,kmax):
     m=md.m(mat)
     ks=[]
     times=[]
+    nodes=list(G.nodes())
     for i in range(2,kmax):
         start=datetime.datetime.now()
         clusters=Kmeans(G,i,False)
+       
         end=datetime.datetime.now()
         diff=end-start
         times.append(diff.total_seconds())
         ks.append(i)
-        mod.append(md.modularite(G,mat,clusters,m))
+        clusters2={}
+        for i in range(len(clusters)):
+            if(clusters[i] in clusters2.keys()):
+                clusters2[clusters[i]].append(nodes[i])
+            else:
+                clusters2[clusters[i]]=[nodes[i]]
+            
+        
+        mod.append(nx.community.modularity(G,list(clusters2.values())))
+    
+    
     dr.draw(ks,mod,"changement de modularité en fonction de paramètre k","k","modularité")
     dr.draw(ks,times,"Temps d'exécution en fonction de k","k","Temps d'exécution (s)")
 def evaluateN(Gs,k):
@@ -95,16 +110,27 @@ def evaluateN(Gs,k):
     times=[]
     sizes=[]
     for G in Gs:
+        nodes=list(G.nodes())
         mat=md.matAdj(G)
         m=md.m(mat)
         sizes.append(len(list(G.nodes())))
         start=datetime.datetime.now()
         clusters=Kmeans(G,k,False)
+        
+       
         end=datetime.datetime.now()
-        mod.append(md.modularite(G,mat,clusters,m))
+        clusters2={}
+        for i in range(len(clusters)):
+            if(clusters[i] in clusters2.keys()):
+                
+                clusters2[clusters[i]].append(nodes[i])
+            else:
+                clusters2[clusters[i]]=[nodes[i]]
+        
+        mod.append(nx.community.modularity(G,list(clusters2.values())))
         diff=end-start
         times.append(diff.total_seconds())
-    print(sizes,mod)
+    
     dr.draw(sizes,mod,"changement de modularité en fonction de taille du graphe","Taille","modularité")
     dr.draw(sizes,times,"Temps d'exécution en fonction de la taille du graphe","Taille de graphe","Temps d'exécution (s)")
 G2=nx.karate_club_graph()
@@ -130,4 +156,5 @@ options = {"node_color": "black", "node_size": 50, "linewidths": 0, "width": 0.1
 
 pos = nx.spring_layout(G, seed=1969)  # Seed for reproducible layout
 
-evaluateK(G2,10)
+
+evaluateN([G1,G2,G],2)

@@ -33,7 +33,7 @@ G2=nx.from_edgelist(edgelist)
 # Using Numpy to create an array X
 
 sizes,labelMod,times1=LB.rateMod([G2,G1,G],100,False)
-sizes,contrMod,times2=CR.rateMod([G2,G1,G],50,50,100,False)
+sizes,contrMod,times2=CR.rateMod([G2,G1,G],10,50,100,False)
   
 # Plotting both the curves simultaneously
 plt.plot(sizes, times1, color='r', label='label propagation')
@@ -75,7 +75,7 @@ plt.plot(sizes, contrA, color='g', label='contribution')
   
 # Naming the x-axis, y-axis and the whole graph
 plt.xlabel("Taille du graphe")
-plt.ylabel("Modularité")
+plt.ylabel("Nombre de choix aléatoire")
 plt.title("Comparaison du performance")
   
 # Adding legend, which helps us recognize the curve according to it's color
