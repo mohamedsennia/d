@@ -9,6 +9,7 @@ import urllib.request
 import io
 import zipfile
 import datetime
+import pandas as pd
 def labelPropagation(G,nodes,clusters,show):
     a=0
     ns=nodes
@@ -120,5 +121,10 @@ pos = nx.spring_layout(G, seed=1969)  # Seed for reproducible layout
 G1=nx.karate_club_graph()
 edgelist=[(0,1),(1,2),(2,3),(2,4),(2,5),(3,4),(5,6),(5,7),(6,7),(7,8),(7,9),(8,9)]
 G2=nx.from_edgelist(edgelist)  
-rateMod([G,G1,G],100,True)
 
+data = pd.read_csv("musae_facebook_edges.csv")
+edgelist=[]
+
+for i in range(len(data.loc[:])):
+    edgelist.append((data.loc[i]["id_1"],data.loc[i]["id_2"]))
+G3=nx.from_edgelist(edgelist) 

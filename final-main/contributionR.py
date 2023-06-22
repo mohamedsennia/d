@@ -9,6 +9,7 @@ import urllib.request
 import io
 import zipfile
 import datetime
+import pandas as pd
 def exe(G,k,T,show):
   
     nodes=list(G.nodes)
@@ -286,9 +287,13 @@ options = {"node_color": "black", "node_size": 50, "linewidths": 0, "width": 0.1
 
 pos = nx.spring_layout(G, seed=1969)  # Seed for reproducible layout
 colors=sh.init_colors([n for n in G.nodes()])
-rateMod([G2,G1,G],10,50,100,True)
-rateModPerK(G1,[11,21,31,41,51,61,71,81,91],50,100)
-rateModPerT(G1,10,[11,21,31,41,51,61,71,81,91],100)
+data = pd.read_csv("musae_facebook_edges.csv")
+edgelist=[]
+
+for i in range(len(data.loc[:])):
+    edgelist.append((data.loc[i]["id_1"],data.loc[i]["id_2"]))
+G3=nx.from_edgelist(edgelist) 
+
 
 
 

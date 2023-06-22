@@ -30,6 +30,7 @@ def Kmeans(G,k,show):
     if(show==True):
         colors=sh.init_colors(clus)
     while(clustersp!=clusters and clustersp not in history):
+        print("aaaaaa")
         if(clusters==clustersp):
             print("aaaaaa")
         history.append(clustersp)
