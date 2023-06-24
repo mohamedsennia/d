@@ -30,9 +30,8 @@ def Kmeans(G,k,show):
     if(show==True):
         colors=sh.init_colors(clus)
     while(clustersp!=clusters and clustersp not in history):
-        print("aaaaaa")
-        if(clusters==clustersp):
-            print("aaaaaa")
+        if(show==True):
+            sh.show(G,list(clus.values()),colors)
         history.append(clustersp)
         clustersp=[]
         for c in clusters:
@@ -157,5 +156,5 @@ options = {"node_color": "black", "node_size": 50, "linewidths": 0, "width": 0.1
 
 pos = nx.spring_layout(G, seed=1969)  # Seed for reproducible layout
 
+exe(G1,3)
 
-evaluateN([G1,G2,G],2)

@@ -13,6 +13,9 @@ import pandas as pd
 def labelPropagation(G,nodes,clusters,show):
     a=0
     ns=nodes
+    if(show==True):
+        colors=sh.init_colors(clusters)
+        sh.show(G,clusters,colors)
     for n in ns:
         clu={}
         neighbors=G.neighbors(n)
@@ -25,15 +28,18 @@ def labelPropagation(G,nodes,clusters,show):
         if(len(max_keys)>1):
             a+=1
         clusters[n]=max_keys[0]
+        if(show==True):
+            sh.show(G,list(clusters.values()),colors)
+    print(clusters)
     return clusters,a
-def exe(G):
+def exe(G,show):
     noeuds=[]
     noeuds=list(G.nodes)
     clusters={}
     for i in range(len(noeuds)):
         clusters[noeuds[i]]=i+1
 
-    colors=sh.init_colors(list(clusters.values()))    
+    
     clusters,ran=labelPropagation(G,noeuds,clusters,True)
     return clusters,ran
     
@@ -55,7 +61,7 @@ def rateMod(Gs,n,show):
         m=md.m(mat)
         for i in range(n):
             start=datetime.datetime.now()
-            clusters,a=exe(G)
+            clusters,a=exe(G,False)
             
             clusters=list(clusters.values())
             clusters2={}
@@ -89,7 +95,7 @@ def rateA(Gs,n,show):
         sizes.append(len(noeuds))
         
         for i in range(n):
-            clusters,a=exe(G)
+            clusters,a=exe(G,False)
             A+=a
             
         A=A/n
@@ -122,9 +128,5 @@ G1=nx.karate_club_graph()
 edgelist=[(0,1),(1,2),(2,3),(2,4),(2,5),(3,4),(5,6),(5,7),(6,7),(7,8),(7,9),(8,9)]
 G2=nx.from_edgelist(edgelist)  
 
-data = pd.read_csv("musae_facebook_edges.csv")
-edgelist=[]
 
-for i in range(len(data.loc[:])):
-    edgelist.append((data.loc[i]["id_1"],data.loc[i]["id_2"]))
-G3=nx.from_edgelist(edgelist) 
+exe(G1,True)

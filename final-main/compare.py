@@ -31,15 +31,10 @@ G1=nx.karate_club_graph()
 edgelist=[(0,1),(1,2),(2,3),(2,4),(2,5),(3,4),(5,6),(5,7),(6,7),(7,8),(7,9),(8,9)]
 G2=nx.from_edgelist(edgelist)   
 # Using Numpy to create an array X
-data = pd.read_csv("musae_facebook_edges.csv")
-edgelist=[]
 
-for i in range(len(data.loc[:])):
-    edgelist.append((data.loc[i]["id_1"],data.loc[i]["id_2"]))
-G3=nx.from_edgelist(edgelist) 
-sizes,labelMod,times1=LB.rateMod([G3,G2,G1],10,False)
+sizes,labelMod,times1=LB.rateMod([G2,G1,G],10,False)
 print(sizes,labelMod,times1)
-sizes2,contrMod,times2=CR.rateMod([G3,G2,G1],5,5,1,False)
+sizes2,contrMod,times2=CR.rateMod([G2,G1,G],10,10,10,False)
 
 print(sizes,contrMod,times2)
 # Plotting both the curves simultaneously

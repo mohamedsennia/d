@@ -137,19 +137,6 @@
      <string>Louvain</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="particle">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>170</y>
-      <width>101</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Particle swarm</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

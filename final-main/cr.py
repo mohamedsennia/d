@@ -30,6 +30,5 @@ def labelPropagation(G,nodes,clusters,show):
             mama=random.randint(0,joe.size-1)
             clusters[nodes[i]]=(joe[mama])+1
     if(show):
-        sh.show(G,clustersv,colors)      
-            
+        sh.show(G,clustersv,colors)
     return clusters,aléatoire

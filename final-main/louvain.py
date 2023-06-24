@@ -97,4 +97,4 @@ G = nx.parse_gml(gml)  # parse gml data
 options = {"node_color": "black", "node_size": 50, "linewidths": 0, "width": 0.1}
 
 pos = nx.spring_layout(G, seed=1969)  # Seed for reproducible layout
-rateMod([G1,G2,G])
+exe(G2,True)

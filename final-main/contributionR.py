@@ -286,14 +286,8 @@ G = nx.parse_gml(gml)  # parse gml data
 options = {"node_color": "black", "node_size": 50, "linewidths": 0, "width": 0.1}
 
 pos = nx.spring_layout(G, seed=1969)  # Seed for reproducible layout
-colors=sh.init_colors([n for n in G.nodes()])
-data = pd.read_csv("musae_facebook_edges.csv")
-edgelist=[]
-
-for i in range(len(data.loc[:])):
-    edgelist.append((data.loc[i]["id_1"],data.loc[i]["id_2"]))
-G3=nx.from_edgelist(edgelist) 
 
 
+exe(G1,20,70,True)
 
 
