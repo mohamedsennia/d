@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from chooseA import Ui_MainWindowA
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -34,6 +34,7 @@ class Ui_MainWindow(object):
         self.compare = QtWidgets.QPushButton(self.centralwidget)
         self.compare.setGeometry(QtCore.QRect(410, 110, 321, 31))
         self.compare.setObjectName("compare")
+        self.compare.clicked.connect(self.compareHandle)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
@@ -42,10 +43,16 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
+        self.test.clicked.connect(self.testHandle)
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
+    def testHandle(self):
+        MainWindow = QtWidgets.QMainWindow()
+        ui = Ui_MainWindowA()
+        ui.setupUi(MainWindow)
+        MainWindow.show()
+    def compareHandle(self):
+        print("ss")
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))

@@ -105,28 +105,3 @@ def rateA(Gs,n,show):
     return(sizes,As)
 
 
-url = "http://www-personal.umich.edu/~mejn/netdata/football.zip"
-
-sock = urllib.request.urlopen(url)  # open URL
-s = io.BytesIO(sock.read())  # read into BytesIO "file"
-sock.close()
-
-zf = zipfile.ZipFile(s)  # zipfile object
-txt = zf.read("football.txt").decode()  # read info file
-gml = zf.read("football.gml").decode()  # read gml data
-# throw away bogus first line with # from mejn files
-gml = gml.split("\n")[1:]
-G = nx.parse_gml(gml)  # parse gml data
-
-
-
-
-options = {"node_color": "black", "node_size": 50, "linewidths": 0, "width": 0.1}
-
-pos = nx.spring_layout(G, seed=1969)  # Seed for reproducible layout
-G1=nx.karate_club_graph()
-edgelist=[(0,1),(1,2),(2,3),(2,4),(2,5),(3,4),(5,6),(5,7),(6,7),(7,8),(7,9),(8,9)]
-G2=nx.from_edgelist(edgelist)  
-
-
-exe(G1,True)
